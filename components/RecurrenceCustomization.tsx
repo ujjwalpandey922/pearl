@@ -8,7 +8,8 @@ const RecurrenceCustomization: React.FC = () => {
       recurrenceType: state.recurrenceType,
       setCustomizationOptions: state.setCustomizationOptions,
     })
-  );
+  ); // Extracting recurrenceType and setCustomizationOptions from the store.
+
   const handleCustomizationChange = (
     option: Partial<{
       days: number;
@@ -22,15 +23,15 @@ const RecurrenceCustomization: React.FC = () => {
       specificYearDay?: number;
     }>
   ) => {
-    setCustomizationOptions(option);
+    setCustomizationOptions(option); // Update customization options in the store.
   };
 
+  // Daily recurrence customization
   if (recurrenceType === "daily") {
     return (
       <div>
         <label>
           <span className="text-2xl font-semibold">Every X days:</span>
-
           <input
             type="number"
             onChange={(e) =>
@@ -38,13 +39,14 @@ const RecurrenceCustomization: React.FC = () => {
             }
             className="ml-2 border rounded p-1 bg-transparent"
             min="1"
-            placeholder="1"
+            placeholder="1" // Default value of 1 day if not specified.
           />
         </label>
       </div>
     );
   }
 
+  // Weekly recurrence customization
   if (recurrenceType === "weekly") {
     return (
       <div>
@@ -58,14 +60,14 @@ const RecurrenceCustomization: React.FC = () => {
                 onChange={(e) => {
                   const selectedDays =
                     useDatePickerStore.getState().customizationOptions
-                      .specificDays || [];
+                      .specificDays || []; // Get the current selected days.
                   if (e.target.checked) {
                     handleCustomizationChange({
-                      specificDays: [...selectedDays, day],
+                      specificDays: [...selectedDays, day], // Add selected day.
                     });
                   } else {
                     handleCustomizationChange({
-                      specificDays: selectedDays.filter((d) => d !== day),
+                      specificDays: selectedDays.filter((d) => d !== day), // Remove unselected day.
                     });
                   }
                 }}
@@ -84,6 +86,7 @@ const RecurrenceCustomization: React.FC = () => {
     );
   }
 
+  // Monthly recurrence customization
   if (recurrenceType === "monthly") {
     return (
       <div>
@@ -96,16 +99,14 @@ const RecurrenceCustomization: React.FC = () => {
             }
             className="ml-2 border rounded p-1 bg-transparent"
             min="1"
-            placeholder="1"
+            placeholder="1" // Default value of 1 month if not specified.
           />
         </label>
         <div className="mt-4">
           <label>
             <span className="text-2xl font-semibold">
-              {" "}
               On the nth day of the month:
             </span>
-
             <input
               type="number"
               onChange={(e) =>
@@ -114,7 +115,7 @@ const RecurrenceCustomization: React.FC = () => {
               className="ml-2 border rounded p-1 bg-transparent"
               min="1"
               max="31"
-              placeholder="1"
+              placeholder="1" // Allowing input for any day of the month.
             />
           </label>
         </div>
@@ -122,6 +123,7 @@ const RecurrenceCustomization: React.FC = () => {
     );
   }
 
+  // Yearly recurrence customization
   if (recurrenceType === "yearly") {
     return (
       <div>
@@ -134,7 +136,7 @@ const RecurrenceCustomization: React.FC = () => {
             }
             className="ml-2 border rounded p-1 bg-transparent"
             min="1"
-            placeholder="1"
+            placeholder="1" // Default value of 1 year if not specified.
           />
         </label>
         <div className="mt-4">
@@ -150,7 +152,7 @@ const RecurrenceCustomization: React.FC = () => {
               className="ml-2 border rounded p-1 bg-transparent"
               min="1"
               max="31"
-              placeholder="1"
+              placeholder="1" // Allowing input for any day of the month.
             />
             <span className="text-2xl font-semibold ml-2"> day of</span>
           </label>
@@ -158,12 +160,12 @@ const RecurrenceCustomization: React.FC = () => {
             onChange={(e) =>
               handleCustomizationChange({ specificMonth: e.target.value })
             }
-            className="ml-2 border rounded p-1 bg-transparent "
+            className="ml-2 border rounded p-1 bg-transparent"
           >
             <option value="">Select month</option>
             {monthsOfYear.map((month) => (
               <option key={month} value={month} className="text-black">
-                {month}
+                {month} {/* Display the month options. */}
               </option>
             ))}
           </select>
@@ -172,7 +174,7 @@ const RecurrenceCustomization: React.FC = () => {
     );
   }
 
-  return null;
+  return null; // Return null if recurrenceType doesn't match any known type.
 };
 
 export default RecurrenceCustomization;
